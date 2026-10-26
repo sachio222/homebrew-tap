@@ -1,32 +1,74 @@
 class Socketchat < Formula
   desc "Encrypted group chat with a server you run yourself"
   homepage "https://socketchat.org"
-  license any_of: ["MIT", "Apache-2.0"]
-
-  on_macos do
-    on_arm do
-      url "https://github.com/sachio222/socketchat/releases/download/v0.5.1/socketchat-aarch64-apple-darwin.tar.xz"
-      sha256 "ecabbdd5a1b941ef1af385e12963e3ffdc3a8d2d570fb3a5e14658ad66ea36ae"
+  if OS.mac?
+    if Hardware::CPU.arm?
+      url "https://github.com/sachio222/socketchat/releases/download/v0.5.2/socketchat-aarch64-apple-darwin.tar.xz"
+      sha256 "5fdfdb6b5d277fd82926f573e88ca92ce630a4b6421a97fc949f103568c91fc2"
     end
-    on_intel do
-      url "https://github.com/sachio222/socketchat/releases/download/v0.5.1/socketchat-x86_64-apple-darwin.tar.xz"
-      sha256 "ad17a196e7cc2034c8adb3f83b8bd3a0062f0a5a008d621c3fef4ed0a60d5ee7"
+    if Hardware::CPU.intel?
+      url "https://github.com/sachio222/socketchat/releases/download/v0.5.2/socketchat-x86_64-apple-darwin.tar.xz"
+      sha256 "88baa8a9010c442350514e599f38927776ce84cdc9ac9545e470b17a83a7f3aa"
     end
   end
-
-  on_linux do
-    on_arm do
-      url "https://github.com/sachio222/socketchat/releases/download/v0.5.1/socketchat-aarch64-unknown-linux-gnu.tar.xz"
-      sha256 "cd0a59b009999f5589070e03229579fea820160f8eeeea3f4ff69719703b5fe5"
+  if OS.linux?
+    if Hardware::CPU.arm?
+      url "https://github.com/sachio222/socketchat/releases/download/v0.5.2/socketchat-aarch64-unknown-linux-gnu.tar.xz"
+      sha256 "e608a80176e43e567f0fc51a14b0e5527a19ab78d7c4b172881ab40a0d8e6ee0"
     end
-    on_intel do
-      url "https://github.com/sachio222/socketchat/releases/download/v0.5.1/socketchat-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "326f8aa217b5dfeaf0a4540074aca0de4072cb888d4e67bf215018c7df080319"
+    if Hardware::CPU.intel?
+      url "https://github.com/sachio222/socketchat/releases/download/v0.5.2/socketchat-x86_64-unknown-linux-gnu.tar.xz"
+      sha256 "ba61f293cdfbcdb5fb82656b0de0afc062bddece488c6c0bf0f56bec5027cedb"
+    end
+  end
+  license any_of: ["MIT", "Apache-2.0"]
+
+  BINARY_ALIASES = {
+    "aarch64-apple-darwin":      {},
+    "aarch64-unknown-linux-gnu": {},
+    "x86_64-apple-darwin":       {},
+    "x86_64-pc-windows-gnu":     {},
+    "x86_64-unknown-linux-gnu":  {},
+  }.freeze
+
+  def target_triple
+    cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
+    os = OS.mac? ? "apple-darwin" : "unknown-linux-gnu"
+
+    "#{cpu}-#{os}"
+  end
+
+  def install_binary_aliases!
+    BINARY_ALIASES[target_triple.to_sym].each do |source, dests|
+      dests.each do |dest|
+        bin.install_symlink bin/source.to_s => dest
+      end
     end
   end
 
   def install
-    bin.install "socketchat"
+    if OS.mac? && Hardware::CPU.arm?
+      bin.install "socketchat"
+    end
+    if OS.mac? && Hardware::CPU.intel?
+      bin.install "socketchat"
+    end
+    if OS.linux? && Hardware::CPU.arm?
+      bin.install "socketchat"
+    end
+    if OS.linux? && Hardware::CPU.intel?
+      bin.install "socketchat"
+    end
+
+    install_binary_aliases!
+
+    # Homebrew will automatically install these, so we don't need to do that
+    doc_files = Dir["README.*", "readme.*", "LICENSE", "LICENSE.*", "CHANGELOG.*"]
+    leftover_contents = Dir["*"] - doc_files
+
+    # Install any leftover files in pkgshare; these are probably config or
+    # sample files.
+    pkgshare.install(*leftover_contents) unless leftover_contents.empty?
   end
 
   test do
