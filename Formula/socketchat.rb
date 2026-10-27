@@ -3,22 +3,22 @@ class Socketchat < Formula
   homepage "https://socketchat.org"
   if OS.mac?
     if Hardware::CPU.arm?
-      url "https://github.com/sachio222/socketchat/releases/download/v0.6.0/socketchat-aarch64-apple-darwin.tar.xz"
-      sha256 "710c1df09ab7161105c3ee49216277f00b7435d0432e1cf7e635bbf9ded51033"
+      url "https://github.com/sachio222/socketchat/releases/download/v0.6.1/socketchat-aarch64-apple-darwin.tar.xz"
+      sha256 "5e328c1013e66a3110cf193a44afbca91b2caaadb66caf1e0ec34634d4d8cc30"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/sachio222/socketchat/releases/download/v0.6.0/socketchat-x86_64-apple-darwin.tar.xz"
-      sha256 "19946c27035b270fb0a0333abf5839cb604bb756bba2af95c0b0a2b54f01a35d"
+      url "https://github.com/sachio222/socketchat/releases/download/v0.6.1/socketchat-x86_64-apple-darwin.tar.xz"
+      sha256 "fb07e99f98dbdfc908e22cf7ce41ed10b9c11ed57074c9f44c5781e0eead2070"
     end
   end
   if OS.linux?
     if Hardware::CPU.arm?
-      url "https://github.com/sachio222/socketchat/releases/download/v0.6.0/socketchat-aarch64-unknown-linux-gnu.tar.xz"
-      sha256 "ea48be74f6de8d161554107eeb0b4f7a2649c9a7492ce37051b27a325f8a0dc5"
+      url "https://github.com/sachio222/socketchat/releases/download/v0.6.1/socketchat-aarch64-unknown-linux-gnu.tar.xz"
+      sha256 "be33a8da3da2354c97c5508a893671a1f91c18dc5f53b2f84676fd2e1dce7e56"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/sachio222/socketchat/releases/download/v0.6.0/socketchat-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "2dd65d9023f8b378b6c7262102634c6f72249a9ea9b725060e27bb16fc1b5060"
+      url "https://github.com/sachio222/socketchat/releases/download/v0.6.1/socketchat-x86_64-unknown-linux-gnu.tar.xz"
+      sha256 "3e0480cc44d4c7a9f4f7eb63b982eb3a45d43e90f1e4b45582730613585bdcfb"
     end
   end
   license any_of: ["MIT", "Apache-2.0"]
